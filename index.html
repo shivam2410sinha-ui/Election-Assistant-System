@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-container">
+                <i data-lucide="vote" class="logo-icon"></i>
+                <span class="logo-text">ElecAssist</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-page="home">
+                    <i data-lucide="home"></i>
+                    <span>Timeline</span>
+                </li>
+                <li data-page="chat">
+                    <i data-lucide="message-square"></i>
+                    <span>Assistant</span>
+                </li>
+                <li data-page="quiz">
+                    <i data-lucide="help-circle"></i>
+                    <span>Quizzes</span>
+                </li>
+                <li data-page="notes">
+                    <i data-lucide="book-open"></i>
+                    <span>Cheat Notes</span>
+                </li>
+                <li data-page="eligibility">
+                    <i data-lucide="user-check"></i>
+                    <span>Eligibility</span>
+                </li>
+                <li data-page="guide">
+                    <i data-lucide="info"></i>
+                    <span>Booth Guide</span>
+                </li>
+                <li data-page="voter-search">
+                    <i data-lucide="search"></i>
+                    <span>Voter List</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+            
+            <!-- Home / Timeline Page -->
+            <section id="home" class="page active">
+                <header class="page-header">
+                    <h1>Election Timeline</h1>
+                    <p>Understand the standard steps in the democratic election process.</p>
+                <div class="home-status-container" id="home-status-container">
+                    <div class="status-card" id="status-card">
+                        <div class="status-content">
+                            <i data-lucide="user-check"></i>
+                            <div>
+                                <h3>Your Voting Status</h3>
+                                <p id="status-text">Eligibility not checked yet.</p>
+                            </div>
+                        </div>
+                        <button onclick="navToEligibility()" class="status-btn">Check Now</button>
+                    </div>
+
+                    <div class="status-card voter-cta">
+                        <div class="status-content">
+                            <i data-lucide="search"></i>
+                            <div>
+                                <h3>Voter List Search</h3>
+                                <p id="voter-search-status">Verify your name in the roll.</p>
+                            </div>
+                        </div>
+                        <button onclick="navToVoterSearch()" class="status-btn accent">Search Now</button>
+                    </div>
+                    
+                    <div class="status-card guide-cta">
+                        <div class="status-content">
+                            <i data-lucide="info"></i>
+                            <div>
+                                <h3>Booth Guide</h3>
+                                <p>Know the Do's and Don'ts before you go.</p>
+                            </div>
+                        </div>
+                        <button onclick="navToGuide()" class="status-btn secondary">View Guide</button>
+                    </div>
+                </div>
+                <div class="timeline-container" id="timeline-container">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Chatbot Page -->
+            <section id="chat" class="page">
+                <header class="page-header">
+                    <h1>AI Election Assistant</h1>
+                    <p>Ask me anything about elections! Voice enabled.</p>
+                </header>
+                <div class="chat-interface">
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Initial Greeting -->
+                        <div class="message bot-message">
+                            <div class="message-content">
+                                Hello! I'm your interactive Election Assistant. How can I help you today? Try asking about "voter registration" or "how polling works."
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <button id="voice-btn" class="icon-btn" title="Click to speak">
+                            <i data-lucide="mic"></i>
+                        </button>
+                        <input type="text" id="chat-input" placeholder="Type your question here...">
+                        <button id="send-btn" class="primary-btn">Send</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz Page -->
+            <section id="quiz" class="page">
+                <header class="page-header">
+                    <h1>Test Your Knowledge</h1>
+                    <p>Take contextual quizzes to reinforce your understanding.</p>
+                </header>
+                <div id="quiz-container" class="quiz-container">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Cheat Notes Page -->
+            <section id="notes" class="page">
+                <header class="page-header">
+                    <h1>Cheat Notes</h1>
+                    <p>Quick facts and summaries about the election system.</p>
+                </header>
+                <div id="notes-container" class="notes-container">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Eligibility Checker Page -->
+            <section id="eligibility" class="page">
+                <header class="page-header">
+                    <h1>Voter Eligibility Checker</h1>
+                    <p>Quickly check if you are eligible to cast your vote in the next election.</p>
+                </header>
+                <div class="eligibility-container" id="eligibility-container">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="eligibility-progress"></div>
+                    </div>
+                    
+                    <!-- Question Card -->
+                    <div id="eligibility-card" class="eligibility-card">
+                        <div id="eligibility-question" class="eligibility-question"></div>
+                        <div class="eligibility-actions">
+                            <button class="eligibility-btn yes-btn" data-answer="yes">Yes, I have</button>
+                            <button class="eligibility-btn no-btn" data-answer="no">No, I haven't</button>
+                        </div>
+                    </div>
+
+                    <!-- Result Card (Hidden by default) -->
+                    <div id="eligibility-result" class="eligibility-result hidden">
+                        <div class="result-icon" id="result-icon"></div>
+                        <h2 id="result-title"></h2>
+                        <p id="result-desc"></p>
+                        <button id="reset-eligibility" class="primary-btn">Check Again</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Booth Guide Page -->
+            <section id="guide" class="page">
+                <header class="page-header">
+                    <h1>Polling Booth Guide</h1>
+                    <p>Follow these guidelines to ensure a smooth and legal voting process.</p>
+                </header>
+                
+                <div class="guide-sections">
+                    <!-- DO'S PART -->
+                    <div class="guide-part">
+                        <div class="part-header do">
+                            <i data-lucide="check-circle-2"></i>
+                            <h2>The DO's</h2>
+                        </div>
+                        <div class="guide-grid">
+                            <div class="guide-card do">
+                                <div class="card-image"><img src="assets/queue.png" alt="Queue"></div>
+                                <div class="card-content">
+                                    <h3>Maintain Decorum</h3>
+                                    <p>Stand in the queue and wait for your turn patiently. Silence is mandatory.</p>
+                                </div>
+                            </div>
+                            <div class="guide-card do">
+                                <div class="card-image"><img src="assets/ink.png" alt="Ink"></div>
+                                <div class="card-content">
+                                    <h3>Get Your Finger Inked</h3>
+                                    <p>The indelible ink on your left forefinger is the proud mark of your vote.</p>
+                                </div>
+                            </div>
+                            <div class="guide-card do">
+                                <div class="card-image"><img src="assets/checklist.png" alt="Checklist"></div>
+                                <div class="card-content">
+                                    <h3>Check Voter List</h3>
+                                    <p>Verify your name and serial number on the electoral roll outside the booth.</p>
+                                </div>
+                            </div>
+                            <div class="guide-card do">
+                                <div class="card-image"><img src="assets/docs.png" alt="Docs"></div>
+                                <div class="card-content">
+                                    <h3>Carry Valid ID</h3>
+                                    <p>Bring your Voter ID (EPIC) or other ECI-approved documents like Aadhar.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DON'TS PART -->
+                    <div class="guide-part">
+                        <div class="part-header dont">
+                            <i data-lucide="x-circle"></i>
+                            <h2>The DON'Ts</h2>
+                        </div>
+                        <div class="guide-grid">
+                            <div class="guide-card dont">
+                                <div class="card-image"><img src="assets/no_mobile.png" alt="No Mobile"></div>
+                                <div class="card-content">
+                                    <h3>No Electronics</h3>
+                                    <p>Mobile phones, smartwatches, and gadgets are strictly forbidden inside.</p>
+                                </div>
+                            </div>
+                            <div class="guide-card dont">
+                                <div class="card-image"><img src="assets/no_symbols.png" alt="No Symbols"></div>
+                                <div class="card-content">
+                                    <h3>No Political Symbols</h3>
+                                    <p>Do not wear any clothing or caps with party logos or candidate names.</p>
+                                </div>
+                            </div>
+                            <div class="guide-card dont">
+                                <div class="card-image"><img src="assets/no_photos.png" alt="No Photos"></div>
+                                <div class="card-content">
+                                    <h3>No Photography</h3>
+                                    <p>Taking photos of the EVM, VVPAT, or the voting process is a legal offense.</p>
+                                </div>
+                            </div>
+                            <div class="guide-card dont">
+                                <div class="card-image"><img src="assets/no_double.png" alt="No Double"></div>
+                                <div class="card-content">
+                                    <h3>No Double Voting</h3>
+                                    <p>Attempting to vote more than once is a serious crime under electoral law.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Voter List Search Page -->
+            <section id="voter-search" class="page">
+                <header class="page-header">
+                    <h1>Voter List Search</h1>
+                    <p>Enter your EPIC number to verify if your name is in the official electoral roll.</p>
+                </header>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="epic-input" placeholder="Enter EPIC Number (e.g., ABC1234567)" maxlength="10">
+                        <button id="voter-search-btn" class="primary-btn">Verify Status</button>
+                    </div>
+                    
+                    <div id="voter-result-area" class="voter-result-area">
+                        <!-- Initial State -->
+                        <div class="voter-initial-msg">
+                            <i data-lucide="user-check"></i>
+                            <p>Ready to verify. Please enter your 10-digit EPIC number.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="voter-info-cards">
+                    <div class="info-card">
+                        <i data-lucide="help-circle"></i>
+                        <h3>What is EPIC?</h3>
+                        <p>Electors Photo Identity Card (EPIC) is your unique Voter ID number assigned by the ECI.</p>
+                    </div>
+                    <div class="info-card">
+                        <i data-lucide="map-pin"></i>
+                        <h3>Not Found?</h3>
+                        <p>If your name isn't listed, you can apply for registration via Form 6 on the NVSP portal.</p>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <!-- Modals / Toasts (e.g. for quiz recommendations) -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Quiz Result Modal -->
+    <div id="quiz-modal" class="modal">
+        <div class="modal-content">
+            <i data-lucide="award" class="modal-icon"></i>
+            <h2>Quiz Set Completed!</h2>
+            <div class="score-display">
+                Score: <span id="final-score">0</span> / <span id="total-questions">5</span>
+            </div>
+            <p id="modal-msg">Great job! You're becoming an expert on the Indian election system.</p>
+            <div class="modal-actions">
+                <button id="continue-quiz" class="primary-btn">Continue to Next Set</button>
+                <button id="close-modal" class="secondary-btn">Review My Answers</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="knowledgeBase.js"></script>
+    <script src="voterDatabase.js"></script>
+    <script src="app.js?v=2"></script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
